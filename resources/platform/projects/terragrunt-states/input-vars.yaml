@@ -1,0 +1,5 @@
+activate_apis:
+  - cloudasset.googleapis.com
+  - storage-api.googleapis.com
+  - logging.googleapis.com
+  - stackdriver.googleapis.com

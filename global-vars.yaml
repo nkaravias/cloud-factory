@@ -1,0 +1,7 @@
+org_id: 670891908486
+
+platform-root-location: "folders/818436369387"
+platform-prefix: "platform"
+# Specify the root of the platform/state folder
+#parent = "organizations/${local.inputs.org_id}"
+#parent = "folders/<some folder id>"
