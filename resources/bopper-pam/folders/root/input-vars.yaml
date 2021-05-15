@@ -1,0 +1,10 @@
+set_roles: true
+folder_admin_roles:
+  - roles/resourcemanager.folderCreator
+  - roles/resourcemanager.projectCreator
+  # billing account IAM binding needs to be performed on the billing account in order to create projects
+  #- roles/billing.user
+
+all_folder_admins:
+  # use sourcedgroup.com identities for testing, replace with cicd SA or hopper platform admins
+  - "user:nikolas.karavias@sourcedgroup.com"

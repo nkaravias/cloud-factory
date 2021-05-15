@@ -1,0 +1,9 @@
+billing_account: 00E11A-0AB9A2-077BE7
+
+tenant: &tenant bopper-pam
+labels:
+  tenant: *tenant
+  created_via: terragrunt
+
+tfstate_buckets:
+  name: tfstate-077be7

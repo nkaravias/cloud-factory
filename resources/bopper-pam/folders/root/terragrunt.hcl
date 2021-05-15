@@ -1,22 +1,25 @@
 include {
-  path = find_in_parent_folders("tenant-state-prod.hcl")
+  path = find_in_parent_folders("state.hcl")
 }
 
 locals {
   global_vars = yamldecode(file(find_in_parent_folders("global-vars.yaml")))
+  tenant_vars = yamldecode(file(find_in_parent_folders("tenant-vars.yaml")))
   input_vars = yamldecode(file("${get_terragrunt_dir()}/input-vars.yaml"))
-  inputs = merge(local.global_vars, local.input_vars)
+  inputs = merge(local.global_vars, local.tenant_vars, local.input_vars)
 
-  folder_name = basename(dirname(dirname(get_terragrunt_dir())))
+  #folder_name = basename(dirname(dirname(get_terragrunt_dir())))
+  folder_name = basename(get_terragrunt_dir())
 }
 
 terraform {
-  source = "git::git@github.com:terraform-google-modules/terraform-google-folders.git?ref=v3.0.0"
+  source = "git::git@github.com:terraform-google-modules/terraform-google-folders.git//?ref=v3.0.0"
 }
 
 inputs = {
   parent = local.inputs.platform-root-location
-  names = ["${local.folder_name}"]
+  #names = ["${local.inputs.platform-prefix}-${local.folder_name}"]
+  names = ["${local.inputs.tenant}-${local.folder_name}"]
   # names = [local.folder_name]
 
   set_roles = local.inputs.set_roles

@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 .PHONY: help
 TEST_TARGET := something
-TARGET_TENANT := capthree
+TARGET_TENANT := bopper-pam
 LOG_LEVEL := INFO
 
 help:           ## Show this help.
@@ -23,6 +23,16 @@ destroy-platform: ## destroy bootstrap targets
 
 output-all:
 	terragrunt output-all -json > plan-all.json
+
+# Tenant
+plan-tenant: ## plan bootstrap targets
+	terragrunt run-all plan  --terragrunt-working-dir "resources/${TARGET_TENANT}" --terragrunt-log-level ${LOG_LEVEL}
+
+apply-tenant: ## apply bootstrap targets
+	terragrunt run-all apply  --terragrunt-working-dir "resources/${TARGET_TENANT}" --terragrunt-log-level ${LOG_LEVEL}
+
+destroy-tenant: ## destroy bootstrap targets
+	terragrunt run-all destroy --terragrunt-working-dir "resources/${TARGET_TENANT}" --terragrunt-log-level ${LOG_LEVEL}
 
 plan-test: ## plan target under test
 	@echo terragrunt run-all plan --terragrunt-non-interactive --terragrunt-working-dir "${TEST_TARGET}"
