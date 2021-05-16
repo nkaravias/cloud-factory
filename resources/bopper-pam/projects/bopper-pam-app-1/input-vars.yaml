@@ -1,0 +1,10 @@
+activate_apis:
+  - cloudasset.googleapis.com
+  - cloudkms.googleapis.com
+  - compute.googleapis.com
+  - container.googleapis.com
+  - logging.googleapis.com
+  - servicenetworking.googleapis.com
+  - stackdriver.googleapis.com
+  - storage-api.googleapis.com
+  - vpcaccess.googleapis.com
