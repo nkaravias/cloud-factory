@@ -5,10 +5,7 @@ include {
 locals {
   global_vars = yamldecode(file(find_in_parent_folders("global-vars.yaml")))
   tenant_vars = yamldecode(file(find_in_parent_folders("tenant-vars.yaml")))
-  input_vars = yamldecode(file("${get_terragrunt_dir()}/input-vars.yaml"))
-  inputs = merge(local.global_vars, local.tenant_vars, local.input_vars)
-
-  #project_name = basename(get_terragrunt_dir())
+  inputs = merge(local.global_vars, local.tenant_vars)
 }
 
 terraform {
@@ -40,5 +37,3 @@ inputs = {
     ]
   }
 }
-
-
