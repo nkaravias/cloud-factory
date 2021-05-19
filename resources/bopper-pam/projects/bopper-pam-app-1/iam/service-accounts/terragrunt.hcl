@@ -16,11 +16,13 @@ terraform {
 }
 
 dependency "project" {
-  config_path = "${dirname(dirname(get_terragrunt_dir()))}"
+  #config_path = "${dirname(dirname(get_terragrunt_dir()))}"
+  config_path = "../.."
 
   // this is needed to satisfy the dependency if `parent` module is not provisioned yet
   // when running `terragrunt plan-all` from root level
   mock_outputs = {
+    id = "mock_id"
     project_id = "some_project_id"
   }
 }
@@ -28,4 +30,5 @@ dependency "project" {
 inputs = {
   names = local.inputs.service-accounts
   project_id = dependency.project.outputs.project_id
+  #project_id = dependency.project.outputs.id
 }

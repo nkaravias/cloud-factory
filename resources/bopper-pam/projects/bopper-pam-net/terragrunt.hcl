@@ -12,7 +12,8 @@ locals {
 }
 
 terraform {
-  source = "git::git@github.com:terraform-google-modules/terraform-google-project-factory.git//modules/core_project_factory?ref=v10.3.2"
+  #source = "git::git@github.com:terraform-google-modules/terraform-google-project-factory.git//modules/core_project_factory?ref=v10.3.2"
+  source = "git::git@github.com:terraform-google-modules/terraform-google-project-factory.git?ref=v10.3.2"
 }
 
 dependency "parent_folder" {
@@ -30,7 +31,6 @@ inputs = {
   billing_account      = local.inputs.billing_account
   org_id = local.inputs.org_id
   folder_id         = dependency.parent_folder.outputs.id
-  #enable_shared_vpc_service_project = false
   activate_apis = local.inputs.activate_apis
   create_project_sa = false
   enable_shared_vpc_host_project = true

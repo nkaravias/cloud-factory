@@ -12,7 +12,8 @@ locals {
 }
 
 terraform {
-  source = "git::git@github.com:terraform-google-modules/terraform-google-project-factory.git//modules/core_project_factory?ref=v10.3.2"
+  source = "git::git@github.com:terraform-google-modules/terraform-google-project-factory.git?ref=v10.3.2"
+  #source = "git::git@github.com:terraform-google-modules/terraform-google-project-factory.git//modules/core_project_factory?ref=v10.3.2"
 }
 
 dependency "parent_folder" {
@@ -24,14 +25,24 @@ dependency "parent_folder" {
   }
 }
 
-#dependency "svpc_host_project" {
-#  #config_path = "${dirname(dirname(get_terragrunt_dir()))}"
-#  config_path = "../bopper-pam-net"
-#  mock_outputs = {
-#    id = "some_id"
-#    project_id = "some_id"
-#  }
-#}
+dependency "host_project"  {
+  config_path = "../bopper-pam-net"
+
+  mock_outputs = {
+    id = "some_id"
+    project_id = "mock_project_id"
+  }
+}
+
+dependency "shared_vpc" {
+  #config_path = "${dirname(dirname(get_terragrunt_dir()))}"
+  config_path = "../bopper-pam-net/global/vpc-alpha"
+  mock_outputs = {
+    #id = "some_id"
+    #project_id = "some_id"
+    shared_vpc_subnets = "mock_shared_vpc_subnets"
+  }
+}
 
 inputs = {
   name = local.project_name
@@ -41,9 +52,11 @@ inputs = {
   folder_id         = dependency.parent_folder.outputs.id
   activate_apis = local.inputs.activate_apis
   create_project_sa = false
-  enable_shared_vpc_host_project = false
-  enable_shared_vpc_service_project = false
-  #svpc_host_project_id = dependency.svpc_host_project.outputs.project_id
   labels = local.inputs.labels
   lien = false
+  
+  #enable_shared_vpc_service_project = false
+  svpc_host_project_id = dependency.host_project.outputs.project_id
+  shared_vpc_subnets = [ for subnet in dependency.shared_vpc.outputs.subnets: subnet.id]
+  #shared_vpc_subnets = dependency.shared_vpc.outputs.subnets_self_links
 }

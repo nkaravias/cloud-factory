@@ -19,6 +19,13 @@ dependency "project" {
   }
 }
 
+dependency "project_gke" {
+  config_path = "../../../bopper-pam-app-1"
+  mock_outputs = {
+    id = "some_id"
+  }
+}
+
 dependency "service-accounts" {
   config_path = "../service-accounts"
   mock_outputs = {
@@ -34,6 +41,12 @@ inputs = {
   bindings = {
     "roles/compute.networkAdmin" = [
       "serviceAccount:${dependency.service-accounts.outputs.service_accounts_map["firstone"].email}"
+    ],
+    "roles/compute.networkUser" = [
+      "serviceAccount:service-${dependency.project_gke.outputs.project_number}@container-engine-robot.iam.gserviceaccount.com"
+    ],
+    "roles/container.hostServiceAgentUser" = [
+      "serviceAccount:service-${dependency.project_gke.outputs.project_number}@container-engine-robot.iam.gserviceaccount.com"
     ]
   }
 }

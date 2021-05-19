@@ -33,5 +33,13 @@ inputs = {
   mode = "additive"
 
   bindings = {
+    "roles/logging.logWriter" = [
+      "serviceAccount:${dependency.service-accounts.outputs.service_accounts_map["gkeworker-common"].email}",
+      "serviceAccount:${dependency.service-accounts.outputs.service_accounts_map["gkeworker-platform"].email}"
+    ],
+    "roles/monitoring.metricWriter" = [
+      "serviceAccount:${dependency.service-accounts.outputs.service_accounts_map["gkeworker-common"].email}",
+      "serviceAccount:${dependency.service-accounts.outputs.service_accounts_map["gkeworker-platform"].email}"
+    ]
   }
 }
