@@ -1,0 +1,225 @@
+rules:
+# Ingress
+- name: "allow-pod-to-pod-in"
+  description: ""
+  direction: "INGRESS"
+  priority: 1000
+  ranges: 
+  - "10.100.0.0/20"
+  - "10.100.16.0/20"
+  - "10.100.64.0/20"
+  - "10.100.80.0/20"
+  source_tags: null
+  source_service_accounts: null
+  target_tags: ["gke-compute"]
+  target_service_accounts: null
+  allow:
+  - protocol: "tcp"
+    ports: ["1-65535"]
+  - protocol: "udp"
+    ports: ["53", "10053", "10054"]
+  deny: []
+  log_config:
+    metadata: "EXCLUDE_ALL_METADATA"
+- name: "allow-gcp-healthchecks-in"
+  description: ""
+  direction: "INGRESS"
+  priority: 1001
+  ranges: 
+  - "209.85.152.0/22"
+  - "209.85.204.0/22"
+  - "35.191.0.0/16"
+  - "130.211.0.0/22"
+  source_tags: null
+  source_service_accounts: null
+  target_tags: ["gke-compute"]
+  target_service_accounts: null
+  allow:
+  - protocol: "tcp"
+    ports: ["10256", "30000-32767"]
+  deny: []
+  log_config:
+    metadata: "EXCLUDE_ALL_METADATA"
+- name: "allow-iap-in"
+  description: ""
+  direction: "INGRESS"
+  priority: 1002
+  ranges: 
+  - "35.235.240.0/20"
+  source_tags: null
+  source_service_accounts: null
+  target_tags: ["generic-compute"]
+  target_service_accounts: null
+  allow:
+  - protocol: "tcp"
+    ports: ["22"]
+  deny: []
+  log_config:
+    metadata: "EXCLUDE_ALL_METADATA"
+- name: "allow-platform-in"
+  description: ""
+  direction: "INGRESS"
+  priority: 1003
+  ranges: 
+  - "99.239.133.126/32"
+  source_tags: null
+  source_service_accounts: null
+  target_tags: ["gke-compute"]
+  target_service_accounts: null
+  allow:
+  - protocol: "tcp"
+    ports: ["443", "8080"]
+  deny: []
+  log_config:
+    metadata: "EXCLUDE_ALL_METADATA"
+- name: "allow-master-webhooks-in"
+  description: "Master webhooks: gatekeeper,istio"
+  direction: "INGRESS"
+  priority: 1004
+  ranges: 
+  - "172.16.0.0/28"
+  - "172.16.0.16/28"
+  - "172.16.0.32/28"
+  - "172.16.0.48/28"
+  source_tags: null
+  source_service_accounts: null
+  target_tags: ["gke-compute"]
+  target_service_accounts: null
+  allow:
+  - protocol: "tcp"
+    ports: ["8443", "15017"]
+  deny: []
+  log_config:
+    metadata: "EXCLUDE_ALL_METADATA"
+# Ingress deny
+- name: "deny-all-in"
+  disabled: True
+  enforcement: true
+  description: ""
+  direction: "INGRESS"
+  priority: 65535
+  ranges: 
+  - "0.0.0.0/0"
+  source_tags: null
+  source_service_accounts: null
+  target_tags: null
+  target_service_accounts: null
+  allow: []
+  deny:
+  - protocol: "all"
+    ports: []
+  log_config:
+    metadata: "EXCLUDE_ALL_METADATA"
+# Egress allow
+- name: "allow-pod-to-pod-out"
+  description: ""
+  direction: "EGRESS"
+  priority: 1000
+  ranges: 
+  - "10.100.0.0/20"
+  - "10.100.16.0/20"
+  - "10.100.64.0/20"
+  - "10.100.80.0/20"
+  source_tags: null
+  source_service_accounts: null
+  target_tags: ["gke-compute"]
+  target_service_accounts: null
+  allow:
+  - protocol: "tcp"
+    ports: ["1-65535"]
+  - protocol: "udp"
+    ports: ["53", "10053", "10054"]
+  deny: []
+  log_config:
+    metadata: "EXCLUDE_ALL_METADATA"
+- name: "allow-pods-to-masters-out"
+  description: ""
+  direction: "EGRESS"
+  priority: 1000
+  ranges: 
+  - "172.16.0.0/28"
+  - "172.16.0.16/28"
+  - "172.16.0.32/28"
+  - "172.16.0.48/28"
+  source_tags: null
+  source_service_accounts: null
+  target_tags: ["gke-compute"]
+  target_service_accounts: null
+  allow:
+  - protocol: "tcp"
+    ports: ["1-65535"]
+  - protocol: "udp"
+    ports: ["53", "10053", "10054"]
+  deny: []
+  log_config:
+    metadata: "EXCLUDE_ALL_METADATA"
+- name: "allow-gcp-apis-out"
+  description: ""
+  direction: "EGRESS"
+  priority: 1001
+  ranges: 
+  - "8.8.4.0/24"
+  - "8.8.8.0/24"
+  - "35.191.0.0/16"
+  - "35.190.247.0/24"
+  - "64.15.112.0/20"
+  - "64.233.160.0/19"
+  - "64.18.0.0/20"
+  - "66.249.64.0/19"
+  - "66.102.0.0/20"
+  - "70.32.128.0/19"
+  - "72.14.192.0/18"
+  - "74.125.0.0/16"
+  - "74.114.24.0/21"
+  - "104.237.160.0/19"
+  - "108.170.192.0/18"
+  - "108.177.0.0/17"
+  - "136.112.0.0/12"
+  - "130.211.0.0/22"
+  - "142.250.0.0/15"
+  - "172.110.32.0/21"
+  - "172.217.0.0/16"
+  - "172.253.0.0/16"
+  - "173.194.0.0/16"
+  - "192.178.0.0/15"
+  - "199.36.154.0/23"
+  - "199.36.156.0/24"
+  - "199.36.153.4/30"
+  - "207.223.160.0/20"
+  - "207.126.144.0/20"
+  - "208.117.224.0/19"
+  - "208.65.152.0/22"
+  - "208.68.108.0/22"
+  - "208.81.188.0/22"
+  - "209.85.128.0/17"
+  - "216.239.32.0/19"
+  - "216.58.192.0/19"
+  - "216.73.80.0/20"
+  source_tags: null
+  source_service_accounts: null
+  target_tags: ["generic-compute"]
+  target_service_accounts: null
+  allow:
+  - protocol: "tcp"
+    ports: ["443"]
+  deny: []
+  log_config:
+    metadata: "EXCLUDE_ALL_METADATA"
+# Egress deny
+- name: "deny-all-out"
+  disabled: true
+  description: ""
+  direction: "EGRESS"
+  priority: 65535
+  ranges: 
+  - "0.0.0.0/0"
+  source_tags: null
+  source_service_accounts: null
+  target_tags: null
+  target_service_accounts: null
+  allow: []
+  deny:
+  - protocol: "all"
+    ports: []
+  log_config:
+    metadata: "EXCLUDE_ALL_METADATA"
